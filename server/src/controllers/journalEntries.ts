@@ -5,34 +5,41 @@ import { AddJournalEntryReqBody } from '../interfaces/journalEntries';
 export const getJournalEntry: RequestHandler<{
   user_id: string;
   date: string;
-}> = async (req, res) => {
+}> = async (req, res): Promise<void> => {
   const { user_id, date } = req.params;
   console.log(req.params);
   try {
     const journalEntry = await JournalEntry.findOne({
-      where: { date: date, user_id: user_id },
+      where: { date: date, user_id: user_id }
     });
     res.status(200).send(journalEntry);
   } catch (err) {
-    console.log('error fetching journal Entry', err.message);
+    console.log('error fetching journal Entry', err);
     res.sendStatus(500);
   }
 };
 
-//get all the journals
-export const getAllJournals: RequestHandler = async (req, res) => {
+export const getAllJournals: RequestHandler = async (
+  req,
+  res
+): Promise<void> => {
   const { user_id } = req.params;
   console.log(req.params);
   try {
-    const allJournals = await JournalEntry.findAll({where : {user_id: user_id}});
+    const allJournals = await JournalEntry.findAll({
+      where: { user_id: user_id }
+    });
     res.status(200).send(allJournals);
   } catch (err) {
-    console.log('error fetching journal Entry', err.message);
+    console.log('error fetching journal Entry', err);
     res.sendStatus(500);
   }
-}
+};
 
-export const addJournalEntry: RequestHandler = async (req, res) => {
+export const addJournalEntry: RequestHandler = async (
+  req,
+  res
+): Promise<void> => {
   const { user_id, content, date } = req.body as AddJournalEntryReqBody;
 
   if (content === '') {
@@ -41,7 +48,7 @@ export const addJournalEntry: RequestHandler = async (req, res) => {
       console.log('entry successfully deleted');
       res.sendStatus(201);
     } catch (err) {
-      console.log('error deleting entry', err.message);
+      console.log('error deleting entry', err);
       res.sendStatus(500);
     }
   } else {
@@ -57,27 +64,29 @@ export const addJournalEntry: RequestHandler = async (req, res) => {
         await JournalEntry.create({
           user_id,
           content,
-          date,
+          date
         });
         console.log('entry successfully submitted');
         res.status(201);
       } catch (err) {
-        console.log('entry submission error', err.message);
+        console.log('entry submission error', err);
         res.sendStatus(500);
       }
     }
   }
 };
 
-export const deleteJournal: RequestHandler = async (req, res) =>  {
+export const deleteJournal: RequestHandler = async (
+  req,
+  res
+): Promise<void> => {
   const { user_id, date } = req.params;
   try {
     await JournalEntry.destroy({ where: { user_id, date } });
     console.log('entry successfully deleted');
     res.sendStatus(201);
   } catch (err) {
-    console.log('error deleting entry', err.message);
+    console.log('error deleting entry', err);
     res.sendStatus(500);
   }
-
-}
+};

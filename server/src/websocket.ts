@@ -8,7 +8,7 @@ import { Comment } from './database/models/comment';
 import { User } from './database/models/user';
 import { Friend } from './database/models/friend';
 
-// import { FormattedTask } from './interfaces/tasks';
+import { FormattedTask } from './interfaces/tasks';
 
 import { client } from './database';
 
@@ -16,24 +16,24 @@ const httpServer = createServer(app);
 const options = {};
 const io = new Server(httpServer, options);
 
-const fetchTask = async (id: number): Promise<any> => {
+const fetchTask = async (id: number): Promise<FormattedTask> => {
   const task = await Task.findOne({ where: { id } });
   const likes = await Like.findAll({ where: { task_id: id } });
   const comments = await Comment.findAll({ where: { task_id: id } });
   const user = await User.findOne({
-    where: { id: task?.getDataValue('user_id') },
+    where: { id: task?.getDataValue('user_id') }
   });
   const username = user?.getDataValue('username');
   const mappedComments = await Promise.all(
     comments.map(async (comment) => {
       const currentUser = await User.findOne({
-        where: { id: comment.getDataValue('user_id') },
+        where: { id: comment.getDataValue('user_id') }
       });
       return {
         id: comment.getDataValue('id'),
         content: comment.getDataValue('content'),
         user_id: comment.getDataValue('user_id'),
-        username: currentUser?.getDataValue('username'),
+        username: currentUser?.getDataValue('username')
       };
     })
   );
@@ -43,7 +43,7 @@ const fetchTask = async (id: number): Promise<any> => {
     description: task?.getDataValue('description'),
     completed_at: task?.getDataValue('completed_at'),
     likes,
-    comments: mappedComments,
+    comments: mappedComments
   };
 };
 
@@ -59,8 +59,9 @@ const getUserId = (socketId: string): Promise<string | null> => {
 };
 
 const fetchFriends = async (userId: string): Promise<string[]> => {
-  const friends = await Friend.findAll({ where: { user_id: userId } });
-  return friends.map((friend) => friend.friend_id.toString());
+  const friends = await Friend.findAll({ where: { friend_id: userId } });
+  const mappedFriends = friends.map((friend) => friend.user_id.toString());
+  return mappedFriends;
 };
 
 const updateFeed = async (
@@ -70,6 +71,8 @@ const updateFeed = async (
 ): Promise<void> => {
   const foundTask = await fetchTask(taskId);
   const userId = await getUserId(socketId);
+  console.log('userId', userId);
+
   if (userId) {
     const friends = await fetchFriends(userId);
     const sockets = io.sockets.sockets;
@@ -117,7 +120,10 @@ io.on('connection', (socket) => {
     updateFeed(taskId, socket.id, 'removeComment');
   });
 
-  socket.on('loggedIn', (userId) => client.set(socket.id, userId));
+  socket.on('loggedIn', (userId) => {
+    console.log('in logged in:', userId);
+    client.set(socket.id, userId);
+  });
   socket.on('loggedOut', (userId) => client.del(userId));
 });
 

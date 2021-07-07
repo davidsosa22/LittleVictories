@@ -4,18 +4,18 @@ import { Task } from '../database/models/task';
 import { RequestHandler } from 'express';
 import { AddTaskReqBody } from '../interfaces/tasks';
 import { User } from '../database/models/user';
-import { List } from '../database/models/list';
 import { Like } from '../database/models/like';
 import { Comment } from '../database/models/comment';
+import { TaskReqParams } from '../interfaces/tasks';
 
 const ptsToLvlUp = 250;
 
-export const getTasks: RequestHandler = async (req, res) => {
+export const getTasks: RequestHandler = async (req, res): Promise<void> => {
   const tasks = await Task.findAll();
   res.send(tasks);
 };
 
-export const addTask: RequestHandler = async (req, res) => {
+export const addTask: RequestHandler = async (req, res): Promise<void> => {
   const {
     user_id,
     description,
@@ -28,27 +28,27 @@ export const addTask: RequestHandler = async (req, res) => {
   try {
     const user = await User.findOne({ where: { id: user_id } });
     if (!user) {
-      return res.send(`no user found with id of ${user_id}`);
+      res.send(`no user found with id of ${user_id}`);
+    } else {
+      const newTask = await Task.create({
+        user_id,
+        description,
+        due_date,
+        minutes_to_complete,
+        is_important,
+        is_complete: false,
+        is_public: false
+        //list_id,
+      });
+      res.send({
+        id: newTask.getDataValue('id'),
+        description: newTask.getDataValue('description'),
+        due_date: newTask.getDataValue('due_date'),
+        is_complete: newTask.getDataValue('is_complete'),
+        is_important: newTask.getDataValue('is_important'),
+        minutes_to_complete: newTask.getDataValue('minutes_to_complete')
+      });
     }
-
-    const newTask = await Task.create({
-      user_id,
-      description,
-      due_date,
-      minutes_to_complete,
-      is_important,
-      is_complete: false,
-      is_public: false
-      //list_id,
-    });
-    res.send({
-      id: newTask.getDataValue('id'),
-      description: newTask.getDataValue('description'),
-      due_date: newTask.getDataValue('due_date'),
-      is_complete: newTask.getDataValue('is_complete'),
-      is_important: newTask.getDataValue('is_important'),
-      minutes_to_complete: newTask.getDataValue('minutes_to_complete')
-    });
   } catch (err) {
     if (err instanceof Error) {
       console.log('entry submission error', err.message);
@@ -57,7 +57,10 @@ export const addTask: RequestHandler = async (req, res) => {
   }
 };
 
-export const removeTask: RequestHandler<{ id: string }> = async (req, res) => {
+export const removeTask: RequestHandler<TaskReqParams> = async (
+  req,
+  res
+): Promise<void> => {
   const { id } = req.params;
   await Like.destroy({ where: { task_id: id } });
   await Comment.destroy({ where: { task_id: id } });
@@ -65,10 +68,10 @@ export const removeTask: RequestHandler<{ id: string }> = async (req, res) => {
   res.send(true);
 };
 
-export const markTaskAsComplete: RequestHandler<{ id: string }> = async (
+export const markTaskAsComplete: RequestHandler<TaskReqParams> = async (
   req,
   res
-) => {
+): Promise<void> => {
   try {
     const { id } = req.params;
     await Task.update(
@@ -78,36 +81,44 @@ export const markTaskAsComplete: RequestHandler<{ id: string }> = async (
     const task = await Task.findOne({ where: { id } });
     if (!task) {
       throw new Error(`task with ${id} isn't in db`);
+    } else {
+      const minutes = task.getDataValue('minutes_to_complete');
+      const user = await User.findOne({ where: { id: task.user_id } });
+      if (!user) {
+        throw new Error(`user with ${task.user_id} isn't in db`);
+      } else {
+        const currentPoints = user.getDataValue('points');
+        const currentLevel = user.getDataValue('level');
+        const returnVal = await User.update(
+          {
+            points:
+              currentPoints + minutes < ptsToLvlUp
+                ? currentPoints + minutes
+                : (currentPoints + minutes) % ptsToLvlUp,
+            level:
+              currentPoints + minutes < ptsToLvlUp
+                ? currentLevel
+                : currentLevel + 1
+          },
+          { where: { id: task.user_id }, returning: true }
+        );
+        const updatedUser = await User.findOne({ where: { id: task.user_id } });
+        res.send({
+          task,
+          points: updatedUser?.points,
+          level: updatedUser?.level
+        });
+      }
     }
-    const minutes = task.getDataValue('minutes_to_complete');
-    const user = await User.findOne({ where: { id: task.user_id } });
-    if (!user) {
-      throw new Error(`user with ${task.user_id} isn't in db`);
-    }
-    const currentPoints = user.getDataValue('points');
-    const currentLevel = user.getDataValue('level');
-    const returnVal = await User.update(
-      {
-        points:
-          currentPoints + minutes < ptsToLvlUp
-            ? currentPoints + minutes
-            : (currentPoints + minutes) % ptsToLvlUp,
-        level:
-          currentPoints + minutes < ptsToLvlUp ? currentLevel : currentLevel + 1
-      },
-      { where: { id: task.user_id }, returning: true }
-    );
-    const updatedUser = await User.findOne({ where: { id: task.user_id } });
-    res.send({ task, points: updatedUser?.points, level: updatedUser?.level });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const markTaskAsIncomplete: RequestHandler<{ id: string }> = async (
+export const markTaskAsIncomplete: RequestHandler<TaskReqParams> = async (
   req,
   res
-) => {
+): Promise<void> => {
   try {
     const { id } = req.params;
     await Like.destroy({ where: { task_id: id } });
@@ -119,35 +130,41 @@ export const markTaskAsIncomplete: RequestHandler<{ id: string }> = async (
     const task = await Task.findOne({ where: { id } });
     if (!task) {
       throw new Error(`task with ${id} isn't in db`);
+    } else {
+      const minutes = task.getDataValue('minutes_to_complete');
+      const user = await User.findOne({ where: { id: task.user_id } });
+      if (!user) {
+        throw new Error(`user with ${task.user_id} isn't in db`);
+      } else {
+        const currentPoints = user.getDataValue('points');
+        const currentLevel = user.getDataValue('level');
+        await User.update(
+          {
+            points:
+              currentPoints - minutes < 0
+                ? ptsToLvlUp - (minutes - currentPoints)
+                : currentPoints - minutes,
+            level: currentPoints - minutes < 0 ? currentLevel - 1 : currentLevel
+          },
+          { where: { id: task.user_id } }
+        );
+        const updatedUser = await User.findOne({ where: { id: task.user_id } });
+        res.send({
+          task,
+          points: updatedUser?.points,
+          level: updatedUser?.level
+        });
+      }
     }
-    const minutes = task.getDataValue('minutes_to_complete');
-    const user = await User.findOne({ where: { id: task.user_id } });
-    if (!user) {
-      throw new Error(`user with ${task.user_id} isn't in db`);
-    }
-    const currentPoints = user.getDataValue('points');
-    const currentLevel = user.getDataValue('level');
-    await User.update(
-      {
-        points:
-          currentPoints - minutes < 0
-            ? ptsToLvlUp - (minutes - currentPoints)
-            : currentPoints - minutes,
-        level: currentPoints - minutes < 0 ? currentLevel - 1 : currentLevel
-      },
-      { where: { id: task.user_id } }
-    );
-    const updatedUser = await User.findOne({ where: { id: task.user_id } });
-    res.send({ task, points: updatedUser?.points, level: updatedUser?.level });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const markTaskAsPublic: RequestHandler<{ id: string }> = async (
+export const markTaskAsPublic: RequestHandler<TaskReqParams> = async (
   req,
   res
-) => {
+): Promise<void> => {
   try {
     const { id } = req.params;
     await Task.update({ is_public: true }, { where: { id } });
@@ -168,7 +185,7 @@ export const markTaskAsPublic: RequestHandler<{ id: string }> = async (
   }
 };
 
-export const markTaskAsPrivate: RequestHandler<{ id: string }> = async (
+export const markTaskAsPrivate: RequestHandler<TaskReqParams> = async (
   req,
   res
 ) => {
@@ -183,10 +200,7 @@ export const markTaskAsPrivate: RequestHandler<{ id: string }> = async (
   }
 };
 
-export const getFeedItems: RequestHandler<{ id: string }> = async (
-  req,
-  res
-) => {
+export const getFeedItems: RequestHandler<TaskReqParams> = async (req, res) => {
   try {
     const { id } = req.params;
     const friends = await Friend.findAll({ where: { user_id: id } });

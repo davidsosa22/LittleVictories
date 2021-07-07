@@ -1,7 +1,7 @@
 import { DataTypes, Optional, Model } from 'sequelize';
 import { dbConnection } from '..';
 
-interface UserInstance extends Model {
+export interface UserInstance extends Model {
   id: string;
   username: string;
   hash: string;

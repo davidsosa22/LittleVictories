@@ -25,62 +25,62 @@ export const Task = dbConnection.define<TaskInstance>(
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
+      autoIncrement: true
     },
     user_id: {
       type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: User,
-        key: 'id',
-      },
+        key: 'id'
+      }
     },
     description: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     due_date: {
       type: DataTypes.DATEONLY,
-      allowNull: true,
+      allowNull: true
     },
     minutes_to_complete: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER
       //allowNull: false,
     },
     is_important: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
+      allowNull: false
     },
     is_complete: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
+      allowNull: false
     },
     completed_at: {
       type: DataTypes.DATE,
-      allowNull: true,
+      allowNull: true
     },
     is_public: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
+      allowNull: false
     },
     list_id: {
       type: DataTypes.INTEGER,
       //allowNull: false,
       references: {
         model: List,
-        key: 'id',
-      },
+        key: 'id'
+      }
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: false
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: false,
-    },
+      allowNull: false
+    }
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 );

@@ -3,7 +3,7 @@ import { dbConnection } from '..';
 import { User } from './user';
 import { Task } from './task';
 
-interface LikeInstance extends Model {
+export interface LikeInstance extends Model {
   id: number;
   user_id: string;
   createdAt: Date;
@@ -17,34 +17,34 @@ export const Like = dbConnection.define<LikeInstance>(
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
+      autoIncrement: true
     },
     user_id: {
       type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: User,
-        key: 'id',
-      },
+        key: 'id'
+      }
     },
     task_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: Task,
-        key: 'id',
-      },
+        key: 'id'
+      }
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: false
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: false,
-    },
+      allowNull: false
+    }
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 );
