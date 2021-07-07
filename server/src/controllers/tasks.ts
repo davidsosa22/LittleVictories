@@ -193,6 +193,7 @@ export const getFeedItems: RequestHandler<{ id: string }> = async (
     const mappedFriends = friends.map((friend) =>
       friend.getDataValue('friend_id')
     );
+    mappedFriends.push(id);
     const feed = await Task.findAll({
       where: {
         is_public: true,

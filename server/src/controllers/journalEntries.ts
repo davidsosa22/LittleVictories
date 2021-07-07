@@ -69,11 +69,10 @@ export const addJournalEntry: RequestHandler = async (req, res) => {
   }
 };
 
-
 export const deleteJournal: RequestHandler = async (req, res) =>  {
   const { user_id, date } = req.params;
   try {
-    await JournalEntry.destroy({ where: { user_id: user_id, date: date } });
+    await JournalEntry.destroy({ where: { user_id, date } });
     console.log('entry successfully deleted');
     res.sendStatus(201);
   } catch (err) {
@@ -82,4 +81,3 @@ export const deleteJournal: RequestHandler = async (req, res) =>  {
   }
 
 }
-// remove all journal entries

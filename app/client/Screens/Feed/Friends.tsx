@@ -1,16 +1,9 @@
 import React, { useState, useEffect, ReactElement } from 'react';
 import { useUserContext } from '../../Contexts/userContext';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-} from 'react-native';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 import axios from 'axios';
-import { v4 as getKey } from 'uuid';
-import filter from 'lodash.filter';
-import id from 'date-fns/esm/locale/id/index.js';
-import FriendListView from './FriendListView'
+import { textStyles } from '../../Stylesheets/Stylesheet';
+import FriendListView from './FriendListView';
 
 const Friends = (): ReactElement => {
   const [users, setUsers] = useState([]);
@@ -21,12 +14,15 @@ const Friends = (): ReactElement => {
     axios
       .get('http://localhost:3000/api/auth/users')
       .then(({ data }) => {
-        setUsers(data.filter((users) => {
-          return users.userName !== user.username
-        }));
+        setUsers(
+          data.filter((users) => {
+            return users.username !== user.username;
+          })
+        );
       })
       .catch((err) => console.warn(err, 'l'));
   };
+
   useEffect(() => {
     if (user) {
       getAllUsers();
@@ -35,7 +31,7 @@ const Friends = (): ReactElement => {
 
   // const handleSearch = (text) => {
   //   const filteredData = filter(fullData, (user) => {
-  //     const itemData = user.userName.toUpperCase();
+  //     const itemData = user.username.toUpperCase();
   //     const textData = text.toUpperCase();
   //     return itemData.indexOf(textData) > -1;
   //   });
@@ -43,10 +39,11 @@ const Friends = (): ReactElement => {
   //   setQuery(text);
   // };
 
-
   return (
-    <View>
-      <Text style={styles.header}>Add Friends</Text>
+    <View style={styles.main}>
+      <Text style={user.readable_font ? textStyles.h1_big : textStyles.h1}>
+        User Search
+      </Text>
       <TextInput
         autoCorrect={false}
         style={styles.textInput}
@@ -54,60 +51,40 @@ const Friends = (): ReactElement => {
         value={query}
         placeholder='Search'
       />
-      <FriendListView query={query} user={user} users={users} setUsers={setUsers} />
+      <FriendListView
+        query={query}
+        user={user}
+        users={users}
+        setUsers={setUsers}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8f8f8',
-    alignItems: 'center'
-  },
-  header: {
-    color: '#1D426D',
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginLeft: 20,
-    marginTop: 20
-  },
   listItem: {
     marginTop: 10,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    backgroundColor: '#fff',
-    flexDirection: 'row'
+    padding: 20
   },
-  metaInfo: {
-    marginLeft: 10
-  },
-  text: {
-    fontSize: 20,
-    color: '#101010',
-    marginTop: 60,
-    fontWeight: '700'
+  main: {
+    marginLeft: 40,
+    marginRight: 40,
+    marginTop: 20
   },
   textAreaContainer: {
     backgroundColor: '#8ebac6',
     borderRadius: 10,
     padding: 20,
-    marginTop: 20,
-    marginRight: 20,
-    marginLeft: 20
+    marginTop: 20
   },
   textInput: {
-    textAlign: 'center',
     height: 42,
-    borderWidth: 1,
-    borderColor: '#009688',
     borderRadius: 8,
-    backgroundColor: '#FFFF'
-  },
-  title: {
+    backgroundColor: '#FFFF',
+    padding: 10,
     fontSize: 18,
-    width: 200,
-    padding: 10
+    color: '#1D426D',
+    marginTop: 10
   }
 });
 

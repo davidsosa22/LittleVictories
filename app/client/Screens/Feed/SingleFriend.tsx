@@ -1,14 +1,9 @@
-import React, { useState, useEffect, ReactElement } from 'react';
-import {
-  View,
-  Button,
-  Text,
-  StyleSheet,
-} from 'react-native';
+import React, { useState, ReactElement } from 'react';
+import { View, Button, Text, StyleSheet } from 'react-native';
 import axios from 'axios';
+import { textStyles } from '../../Stylesheets/Stylesheet';
 
-
-const SingleFriend = ({ item, user, users, setUsers }) : ReactElement => {
+const SingleFriend = ({ item, user, users, setUsers }): ReactElement => {
   const [isFriend, setIsFriend] = useState(item.isFriend);
 
   const addFriend = async (id: string): Promise<void> => {
@@ -53,83 +48,34 @@ const SingleFriend = ({ item, user, users, setUsers }) : ReactElement => {
 
   return (
     <View style={styles.textAreaContainer}>
-      <View style={styles.metaInfo}>
-        <Text style={styles.title}>{item.userName}</Text>
-       {!isFriend ? (
-          <Button
-            onPress={() => {
-              addFriend(item.id), alert('Friend Added!');
-            }}
-            title='Add Friend'
-            color='#841584'
-            accessibilityLabel='Learn more about this purple button'
-          />
-        ) :
-         (
-          <Button
-            onPress={() => {
-              removeFriend(item.id), alert('Friend Removed');
-            }}
-            title='Remove Friend'
-            color='#841584'
-            accessibilityLabel='Learn more about this purple button'
-          />
-        ) }
-      </View>
+      <Text style={user.readable_font ? textStyles.text_big : textStyles.text}>
+        {item.username}
+      </Text>
+      {!isFriend ? (
+        <Button
+          onPress={() => {
+            addFriend(item.id), alert('Friend Added!');
+          }}
+          title='Follow'
+        />
+      ) : (
+        <Button
+          onPress={() => {
+            removeFriend(item.id), alert('Friend Removed');
+          }}
+          title='Unfollow'
+        />
+      )}
     </View>
   );
 };
 
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8f8f8',
-    alignItems: 'center'
-  },
-  header: {
-    color: '#1D426D',
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginLeft: 20,
-    marginTop: 20
-  },
-  listItem: {
-    marginTop: 10,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    backgroundColor: '#fff',
-    flexDirection: 'row'
-  },
-  metaInfo: {
-    marginLeft: 10
-  },
-  text: {
-    fontSize: 20,
-    color: '#101010',
-    marginTop: 60,
-    fontWeight: '700'
-  },
   textAreaContainer: {
     backgroundColor: '#8ebac6',
     borderRadius: 10,
     padding: 20,
-    marginTop: 20,
-    marginRight: 20,
-    marginLeft: 20
-  },
-  textInput: {
-    textAlign: 'center',
-    height: 42,
-    borderWidth: 1,
-    borderColor: '#009688',
-    borderRadius: 8,
-    backgroundColor: '#FFFF'
-  },
-  title: {
-    fontSize: 18,
-    width: 200,
-    padding: 10
+    marginTop: 20
   }
 });
 

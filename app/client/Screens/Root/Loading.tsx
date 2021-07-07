@@ -3,7 +3,7 @@ import { ImageBackground, StyleSheet, Text } from 'react-native';
 import { useQuoteContext } from '../../Contexts/quoteContext';
 
 const Loading = () => {
-  const bgImage = require('../../../assets/blue-gradient.png');
+  const bgImage = require('../../../assets/images/blue-gradient.png');
   const { quote, author } = useQuoteContext();
 
   return (
@@ -11,8 +11,8 @@ const Loading = () => {
       <Text style={styles.quote}>"{quote.trim()}"</Text>
       <Text style={styles.author}>{author.trim()}</Text>
     </ImageBackground>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   author: {
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   quote: {
     fontSize: 20,

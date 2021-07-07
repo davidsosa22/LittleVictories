@@ -1,6 +1,7 @@
 import React from 'react';
 import { useUserContext } from '../../Contexts/userContext';
 import { View, Button, Text } from 'react-native';
+import { textStyles } from '../../Stylesheets/Stylesheet';
 
 const Comment = ({ id, content, user_id, username, removeComment }) => {
   const { user } = useUserContext();
@@ -14,7 +15,7 @@ const Comment = ({ id, content, user_id, username, removeComment }) => {
 
   return (
     <View>
-      <Text>
+      <Text style={user.readable_font ? textStyles.text_big : textStyles.text}>
         {content} -- {username}
       </Text>
       {canRemove() && (

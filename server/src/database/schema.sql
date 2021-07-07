@@ -62,16 +62,6 @@ create Table Likes (
   foreign key (task_id) references Tasks(id)
 );
 
-create table TaskHabits (
-	id int primary key auto_increment,
-	task_id int not null,
-  user_id varchar(36) not null,
-  createdAt datetime not null,
-  updatedAt datetime not null,
-  foreign key (user_id) references Users(id),
-  foreign key (task_id) references Tasks(id)
-);
-
 create table Comments (
 	id int primary key auto_increment,
   user_id varchar(36) not null,
@@ -81,14 +71,6 @@ create table Comments (
   updatedAt datetime not null,
   foreign key (user_id) references Users(id),
   foreign key (task_id) references Tasks(id)
-);
-
-create table CommentHearts (
-	id int primary key auto_increment,
-	comment_id int not null,
-  user_id varchar(36) not null,
-  foreign key (user_id) references Users(id),
-  foreign key (comment_id) references Comments(id)
 );
 
 create table JournalEntries (

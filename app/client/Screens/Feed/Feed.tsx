@@ -1,24 +1,22 @@
-import React, {ReactElement, useState} from 'react';
-import { ImageBackground, SafeAreaView, StyleSheet, View } from 'react-native';
+import React, { ReactElement, useState } from 'react';
+import { ImageBackground, SafeAreaView } from 'react-native';
 import ProgressBar from '../Root/ProgressBar';
 import FeedView from './FeedView';
 import { ButtonGroup } from 'react-native-elements';
 import Friends from './Friends';
+import { containerStyles } from '../../Stylesheets/Stylesheet';
 
-
-const Feed = () : ReactElement => {
-  const bgImage = require('../../../assets/blue-gradient.png');
-
+const Feed = (): ReactElement => {
+  const bgImage: any = require('../../../assets/images/blue-gradient.png');
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const buttons: string[] = ['Feed', 'Friends'];
 
-  const buttons = ['Feed', 'Add Friends'];
-
-  const updateIndex = (selectedIndex) => {
+  const updateIndex = (selectedIndex: number): void => {
     setSelectedIndex(selectedIndex);
   };
 
   return (
-    <ImageBackground style={styles.backgroundImage} source={bgImage}>
+    <ImageBackground style={containerStyles.backgroundImage} source={bgImage}>
       <ProgressBar />
       <SafeAreaView>
         <ButtonGroup
@@ -28,7 +26,10 @@ const Feed = () : ReactElement => {
           containerStyle={{
             height: 40,
             borderRadius: 10,
-            borderColor: '#5c83b1'
+            borderColor: '#5c83b1',
+            marginTop: 20,
+            marginLeft: 40,
+            marginRight: 40
           }}
           selectedButtonStyle={{
             backgroundColor: '#5c83b1',
@@ -38,37 +39,10 @@ const Feed = () : ReactElement => {
           textStyle={{ fontSize: 16, color: '#ada6a6' }}
           innerBorderStyle={{ color: '#1D426D' }}
         />
-        {selectedIndex === 0 ? (
-          <FeedView />
-        ) : (
-          <View>
-            <Friends />
-          </View>
-        )}
+        {selectedIndex === 0 ? <FeedView /> : <Friends />}
       </SafeAreaView>
     </ImageBackground>
   );
 };
-
-const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1
-  },
-  scrollview: {
-    textAlign: 'center',
-    alignContent: 'center'
-  },
-  taskbarText: {
-    fontSize: 18,
-    color: '#1D426D'
-  },
-  taskbarView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 40,
-    paddingRight: 40,
-    paddingTop: 20
-  }
-});
 
 export default Feed;

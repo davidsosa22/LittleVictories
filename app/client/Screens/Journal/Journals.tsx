@@ -8,7 +8,7 @@ import { useUserContext } from '../../Contexts/userContext';
 import { containerStyles } from '../../Stylesheets/Stylesheet';
 
 const Journals = () => {
-  const bgImage = require('../../../assets/blue-gradient.png');
+  const bgImage = require('../../../assets/images/blue-gradient.png');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const buttons = ['Current', 'Previous'];
   const { user } = useUserContext();

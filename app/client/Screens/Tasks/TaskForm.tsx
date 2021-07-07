@@ -45,17 +45,18 @@ const TaskForm = () => {
           is_important: isImportant
         }
       );
-      const sortedTasks = user.tasks
-        .concat([task])
-        .sort((t1, t2) =>
-          isBefore(new Date(t1.due_date), new Date(t2.due_date)) ? -1 : 1
-        );
+      const sortedTasks = [...(user?.tasks || []), task].sort((t1, t2) =>
+        isBefore(new Date(t1.due_date), new Date(t2.due_date)) ? -1 : 1
+      );
       setShowForm(false);
       setDescription('');
       setDate(new Date());
       setTimeToComplete(0);
       setIsImportant(false);
-      setUser(Object.assign({}, user, { tasks: sortedTasks }));
+      setUser({
+        ...user,
+        tasks: sortedTasks
+      });
     }
   };
   const onChange = (event, selectedDate) => {

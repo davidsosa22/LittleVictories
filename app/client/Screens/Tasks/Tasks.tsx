@@ -8,7 +8,7 @@ import { containerStyles } from '../../Stylesheets/Stylesheet';
 import { useUserContext } from '../../Contexts/userContext';
 
 const Tasks = () => {
-  const bgImage = require('../../../assets/blue-gradient.png');
+  const bgImage = require('../../../assets/images/blue-gradient.png');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const buttons = ['Tasks', 'Habits'];
   const { user } = useUserContext();
