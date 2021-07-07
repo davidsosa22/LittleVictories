@@ -15,7 +15,7 @@ const SingleHabit = ({ item }) => {
       const {
         data: { points, level }
       } = await axios.patch(
-        `http://localhost:3000/api/habits/${item.id}/complete`
+        `http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/habits/${item.id}/complete`
       );
       const mappedHabits = user.habits.map((habit) => {
         if (habit.id === item.id) {
@@ -34,7 +34,7 @@ const SingleHabit = ({ item }) => {
       const {
         data: { points, level }
       } = await axios.patch(
-        `http://localhost:3000/api/habits/${item.id}/incomplete`
+        `http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/habits/${item.id}/incomplete`
       );
       const mappedHabits = user.habits.map((habit) => {
         if (habit.id === item.id) {
@@ -50,7 +50,9 @@ const SingleHabit = ({ item }) => {
 
   const removeHabit = async () => {
     try {
-      await axios.delete(`http://localhost:3000/api/habits/${item.id}`);
+      await axios.delete(
+        `http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/habits/${item.id}`
+      );
       const filteredHabits = user.habits.filter((habit) => {
         return habit.id !== item.id;
       });

@@ -9,7 +9,7 @@ const SingleFriend = ({ item, user, users, setUsers }): ReactElement => {
   const addFriend = async (id: string): Promise<void> => {
     try {
       const addSuccessful = await axios.post(
-        'http://localhost:3000/api/friends/',
+        'http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/friends/',
         {
           userId: user.id,
           friendId: id
@@ -32,7 +32,9 @@ const SingleFriend = ({ item, user, users, setUsers }): ReactElement => {
 
   const removeFriend = async (id: string): Promise<void> => {
     try {
-      await axios.delete(`http://localhost:3000/api/friends/${user.id}/${id}`);
+      await axios.delete(
+        `http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/friends/${user.id}/${id}`
+      );
       const mappedUsers = users.map((currentUser) => {
         if (currentUser.id === item.id) {
           return { ...currentUser, isFriend: false };

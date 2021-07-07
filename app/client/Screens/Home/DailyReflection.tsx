@@ -19,15 +19,18 @@ const DailyReflection = ({ setHasStats }): ReactElement => {
 
   const handleSubmit = async () => {
     try {
-      const { data } = await axios.post('http://localhost:3000/api/stats', {
-        user_id: user.id,
-        sleep_hours: parseInt(sleepHours),
-        eaten_well: didEatWell === 'yes',
-        exercised: didExercise === 'yes',
-        notes: notes,
-        mood: mood,
-        date: format(new Date(), 'MM-dd-yyyy')
-      });
+      const { data } = await axios.post(
+        'http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/stats',
+        {
+          user_id: user.id,
+          sleep_hours: parseInt(sleepHours),
+          eaten_well: didEatWell === 'yes',
+          exercised: didExercise === 'yes',
+          notes: notes,
+          mood: mood,
+          date: format(new Date(), 'MM-dd-yyyy')
+        }
+      );
       setUserStat({
         id: data.id,
         sleep_hours: data.sleep_hours,

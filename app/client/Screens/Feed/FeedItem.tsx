@@ -33,7 +33,7 @@ const FeedItem = ({
 
   const addLike = async (taskId: number): Promise<void> => {
     const { data: newLike } = await axios.post(
-      'http://localhost:3000/api/likes/',
+      'http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/likes/',
       {
         userId: user.id,
         taskId
@@ -53,7 +53,7 @@ const FeedItem = ({
 
   const removeLike = async (taskId: number): Promise<void> => {
     const { data: removeSuccessful } = await axios.delete(
-      `http://localhost:3000/api/likes/${user.id}/${taskId}`
+      `http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/likes/${user.id}/${taskId}`
     );
     if (removeSuccessful) {
       const mappedFeed = feed.map((feedItem) => {
@@ -72,7 +72,7 @@ const FeedItem = ({
 
   const addComment = async (): Promise<void> => {
     const { data: newComment } = await axios.post(
-      'http://localhost:3000/api/comments',
+      'http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/comments',
       {
         user_id: user.id,
         task_id: id,
@@ -93,7 +93,7 @@ const FeedItem = ({
 
   const removeComment = async (commentId: number): Promise<void> => {
     const { data: removeSuccessful } = await axios.delete(
-      `http://localhost:3000/api/comments/${commentId}`
+      `http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/comments/${commentId}`
     );
     if (removeSuccessful) {
       const mappedFeed = feed.map((feedItem) => {
