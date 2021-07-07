@@ -110,7 +110,7 @@ export const loginUser: RequestHandler = async (req, res): Promise<any> => {
   res.send(formattedUser);
 };
 
-export const users: RequestHandler = async (req, res) => {
+export const users: RequestHandler = async (req, res) : Promise<any> => {
   try {
     const users = await User.findAll();
     const mappedUsers = await Promise.all(

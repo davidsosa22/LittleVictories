@@ -12,7 +12,7 @@ const FriendListView = ({ query, user, users, setUsers }) : ReactElement => {
     <FlatList
       keyExtractor={() => getKey()}
       data={users.filter((user) => {
-        return user.userName.includes(query);
+        return user.userName.toLowerCase().includes(query.toLowerCase());
       })}
       renderItem={({ item }) => (
         <SingleFriend
