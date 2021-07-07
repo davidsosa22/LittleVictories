@@ -60,7 +60,6 @@ const Login = ({ navigation }) => {
       );
       if (userObj) {
         // if successful navigate to home
-        // console.log('THIS', userObj.userStat);
         setTimeout(() => {
           setUser(userObj);
           setUserStat(userObj.userStat);

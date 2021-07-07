@@ -3,7 +3,6 @@ import { getDay, format } from 'date-fns';
 
 const resetDailyHabits = async () => {
   try {
-    console.log('i am resetting the daily habits');
     const habits = await Habit.findAll();
     habits.map(habit => {
       Habit.update(
@@ -18,7 +17,6 @@ const resetDailyHabits = async () => {
 
 const resetWeeklyHabits = async () => {
   try {
-    console.log('i am resetting the weekly habits');
     const habits = await Habit.findAll();
     const currentDayOfWk = getDay(new Date());
     const days = {
@@ -46,7 +44,6 @@ const resetWeeklyHabits = async () => {
 
 const resetMonthlyHabits = async () => {
   try {
-    console.log('i am resetting the daily habits');
     const habits = await Habit.findAll();
     const currentDateOfMonth = format(new Date(), 'd');
     habits.map(habit => {

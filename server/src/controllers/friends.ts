@@ -7,7 +7,6 @@ import { RemoveFriendReqParams } from '../interfaces/friends';
 export const addFriend: RequestHandler = async (req, res): Promise<void> => {
   try {
     const { userId, friendId } = req.body as AddFriendReqBody;
-    console.log(userId, friendId, 'line 12');
     const user = await User.findOne({
       where: {
         id: userId

@@ -7,7 +7,6 @@ export const getJournalEntry: RequestHandler<{
   date: string;
 }> = async (req, res): Promise<void> => {
   const { user_id, date } = req.params;
-  console.log(req.params);
   try {
     const journalEntry = await JournalEntry.findOne({
       where: { date: date, user_id: user_id }
@@ -24,7 +23,6 @@ export const getAllJournals: RequestHandler = async (
   res
 ): Promise<void> => {
   const { user_id } = req.params;
-  console.log(req.params);
   try {
     const allJournals = await JournalEntry.findAll({
       where: { user_id: user_id }
@@ -45,7 +43,6 @@ export const addJournalEntry: RequestHandler = async (
   if (content === '') {
     try {
       await JournalEntry.destroy({ where: { date: date, user_id: user_id } });
-      console.log('entry successfully deleted');
       res.sendStatus(201);
     } catch (err) {
       console.log('error deleting entry', err);
@@ -66,7 +63,6 @@ export const addJournalEntry: RequestHandler = async (
           content,
           date
         });
-        console.log('entry successfully submitted');
         res.status(201);
       } catch (err) {
         console.log('entry submission error', err);
@@ -83,7 +79,6 @@ export const deleteJournal: RequestHandler = async (
   const { user_id, date } = req.params;
   try {
     await JournalEntry.destroy({ where: { user_id, date } });
-    console.log('entry successfully deleted');
     res.sendStatus(201);
   } catch (err) {
     console.log('error deleting entry', err);

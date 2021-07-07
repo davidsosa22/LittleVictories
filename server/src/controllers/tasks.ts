@@ -24,7 +24,6 @@ export const addTask: RequestHandler = async (req, res): Promise<void> => {
     is_important
     // list_id,
   } = req.body as AddTaskReqBody;
-  console.log(req.body);
   try {
     const user = await User.findOne({ where: { id: user_id } });
     if (!user) {
@@ -170,8 +169,6 @@ export const markTaskAsPublic: RequestHandler<TaskReqParams> = async (
     await Task.update({ is_public: true }, { where: { id } });
     const task = await Task.findOne({ where: { id } });
     const user = await User.findOne({ where: { id: task?.user_id } });
-    console.log(task);
-
     res.send({
       username: user?.getDataValue('username'),
       description: task?.getDataValue('description'),

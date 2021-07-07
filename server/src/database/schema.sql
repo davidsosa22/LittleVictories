@@ -11,7 +11,7 @@ create table Users (
   createdAt datetime not null,
   updatedAt datetime not null,
   points int not null default 0,
-  level int not null default 1,
+  level int not null default 0,
   readable_font bool not null default false
 );
 

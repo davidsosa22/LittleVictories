@@ -11,31 +11,31 @@ const List = (): ReactElement => {
   const { journals, journal, setJournals, setJournal } = useJournalContext();
   const { user } = useUserContext();
 
-  const clearJournal = (date : String) => {
+  const clearJournal = (date: String) => {
     Alert.alert(
       'Are you sure?',
       'Once deleted, you cannot get this journal entry back.',
       [
         {
           text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
+          style: 'cancel'
         },
         {
           text: 'Clear Entry',
-          onPress: async () : Promise<void> => {
-            await axios.delete(`http://localhost:3000/api/journalEntries/${user.id}/${date}`);
+          onPress: async (): Promise<void> => {
+            await axios.delete(
+              `http://localhost:3000/api/journalEntries/${user.id}/${date}`
+            );
             const mappedJournals = journals.filter((entry) => {
-               return entry.date !== date
+              return entry.date !== date;
             });
             setJournals(mappedJournals);
             alert('Journal successfully cleared.');
-          },
-        },
+          }
+        }
       ]
     );
   };
-
 
   return (
     <View>
@@ -61,20 +61,19 @@ const List = (): ReactElement => {
                   {journal.content}
                 </Text>
                 <Button
-        title='Clear Entry'
-        onPress={() => {
-          clearJournal(journal.date);
-        }}
-      />
+                  title='Clear Entry'
+                  onPress={() => {
+                    clearJournal(journal.date);
+                  }}
+                />
               </View>
             );
           }}
         />
-       ) : null}
+      ) : null}
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   date: {
@@ -110,6 +109,5 @@ const styles = StyleSheet.create({
     marginTop: 20
   }
 });
-
 
 export default List;

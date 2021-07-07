@@ -44,7 +44,7 @@ export const User = dbConnection.define<UserInstance>(
     level: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 1
+      defaultValue: 0
     },
     readable_font: {
       type: DataTypes.BOOLEAN,

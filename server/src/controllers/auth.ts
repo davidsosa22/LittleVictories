@@ -10,8 +10,6 @@ import { isPast, format } from 'date-fns';
 import { UserStat } from '../database/models/stat';
 import { Habit } from '../database/models/habit';
 import { Friend } from '../database/models/friend';
-import { User as UserInterface } from '../interfaces/users';
-import { FormattedUser } from '../interfaces/users';
 export { UserInstance } from '../database/models/user';
 import { Like } from '../database/models/like';
 import { Comment } from '../database/models/comment';
@@ -128,7 +126,6 @@ export const users: RequestHandler = async (req, res): Promise<void> => {
     const users = await User.findAll();
     const mappedUsers = await Promise.all(
       users.map(async (user) => {
-        //console.log(user, 'line 120');
         const isFriend = await Friend.findOne({
           where: {
             friend_id: user.id

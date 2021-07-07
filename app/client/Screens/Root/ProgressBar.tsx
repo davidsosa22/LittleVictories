@@ -18,7 +18,7 @@ const ProgressBar = () => {
           {username}{' '}
         </Text>
         <Text style={user.readable_font ? styles.textLarger : styles.text}>
-          Level {level}{' '}
+          Level {level | 0}{' '}
         </Text>
       </View>
       <Progress.Bar
@@ -26,7 +26,7 @@ const ProgressBar = () => {
         indeterminateAnimationDuration={500}
         progress={points / 250}
         width={210}
-        height={16}
+        height={17}
         borderRadius={5}
         style={styles.progressBar}
       />

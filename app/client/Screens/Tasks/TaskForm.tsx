@@ -51,7 +51,7 @@ const TaskForm = () => {
       setShowForm(false);
       setDescription('');
       setDate(new Date());
-      setTimeToComplete(0);
+      setTimeToComplete(5);
       setIsImportant(false);
       setUser({
         ...user,
@@ -126,7 +126,7 @@ const TaskForm = () => {
             </Text>
             <Slider
               step={5}
-              minimumValue={0}
+              minimumValue={5}
               maximumValue={60}
               value={timeToComplete}
               onValueChange={setTimeToComplete}

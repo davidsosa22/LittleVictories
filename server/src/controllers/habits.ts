@@ -22,7 +22,6 @@ export const addHabit: RequestHandler = async (req, res) => {
       days_of_week,
       calendar_date
     });
-    console.log('habit successfully posted');
     res.status(201).send(newHabit);
   } catch (err) {
     console.log('habit submission error: ', err.message);

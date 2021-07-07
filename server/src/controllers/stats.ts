@@ -23,7 +23,6 @@ export const addStats: RequestHandler = async (req, res) => {
       mood,
       date
     });
-    console.log('stats successfully submitted');
     res.status(201).send(stats);
   } catch (err) {
     console.log('stat submission error: ', err.message);

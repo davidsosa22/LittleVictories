@@ -78,7 +78,6 @@ const MoodChart = (): PieChart => {
         }
       }
     }
-    // console.log(moodCount);
     return moodCount;
   };
 

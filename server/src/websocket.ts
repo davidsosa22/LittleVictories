@@ -71,7 +71,6 @@ const updateFeed = async (
 ): Promise<void> => {
   const foundTask = await fetchTask(taskId);
   const userId = await getUserId(socketId);
-  console.log('userId', userId);
 
   if (userId) {
     const friends = await fetchFriends(userId);
@@ -121,7 +120,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on('loggedIn', (userId) => {
-    console.log('in logged in:', userId);
     client.set(socket.id, userId);
   });
   socket.on('loggedOut', (userId) => client.del(userId));
