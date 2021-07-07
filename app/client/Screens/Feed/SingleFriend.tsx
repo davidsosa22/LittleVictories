@@ -52,7 +52,6 @@ const SingleFriend = ({ item, user, users, setUsers }) : ReactElement => {
   };
 
   return (
-    // user ?
     <View style={styles.textAreaContainer}>
       <View style={styles.metaInfo}>
         <Text style={styles.title}>{item.userName}</Text>
@@ -78,7 +77,6 @@ const SingleFriend = ({ item, user, users, setUsers }) : ReactElement => {
         ) }
       </View>
     </View>
-     //: null
   );
 };
 
