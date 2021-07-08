@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { View, StyleSheet, Text, Button } from 'react-native';
 
 import { useUserContext } from '../../Contexts/userContext';
@@ -15,7 +15,7 @@ import {
 
 import { textStyles } from '../../Stylesheets/Stylesheet';
 
-const SingleTask = ({ item }) => {
+const SingleTask = ({ item }) : ReactElement => {
   const { user, setUser } = useUserContext();
   const { socket } = useSocketContext();
   const { feed, setFeed } = useFeedContext();
@@ -25,7 +25,7 @@ const SingleTask = ({ item }) => {
   const unshareTask = async (): Promise<void> => {
     try {
       const { data: updateSuccessful } = await axios.patch(
-        `http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/tasks/${item.id}/private`
+        `http://localhost:3000/api/tasks/${item.id}/private`
       );
       if (updateSuccessful) {
         setTaskPublic(false);
@@ -40,7 +40,7 @@ const SingleTask = ({ item }) => {
   const shareTask = async (): Promise<void> => {
     try {
       const { data: updateSuccessful } = await axios.patch(
-        `http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/tasks/${item.id}/public`
+        `http://localhost:3000/api/tasks/${item.id}/public`
       );
       if (updateSuccessful) {
         setTaskPublic(true);
@@ -57,7 +57,7 @@ const SingleTask = ({ item }) => {
       const {
         data: { task, points, level }
       } = await axios.patch(
-        `http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/tasks/${item.id}/complete`
+        `http://localhost:3000/api/tasks/${item.id}/complete`
       );
       const mappedTasks = user.tasks.map((task) => {
         if (task.id === item.id) {
@@ -76,7 +76,7 @@ const SingleTask = ({ item }) => {
       const {
         data: { points, level }
       } = await axios.patch(
-        `http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/tasks/${item.id}/incomplete`
+        `http://localhost:3000/api/tasks/${item.id}/incomplete`
       );
       const mappedTasks = user.tasks.map((task) => {
         if (task.id === item.id) {
@@ -96,7 +96,7 @@ const SingleTask = ({ item }) => {
   const removeTask = async (): Promise<void> => {
     try {
       const { data: deleteSuccessful } = await axios.delete(
-        `http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/tasks/${item.id}`
+        `http://localhost:3000/api/tasks/${item.id}`
       );
       if (deleteSuccessful) {
         const filteredTasks = user.tasks.filter((task) => {

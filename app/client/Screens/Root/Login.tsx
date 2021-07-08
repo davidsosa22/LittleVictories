@@ -52,7 +52,7 @@ const Login = ({ navigation }) => {
     if (loginSelected) {
       // attempt a login for the user
       const { data: userObj } = await axios.post(
-        'http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/auth/login',
+        'http://localhost:3000/api/auth/login',
         {
           username,
           password: passwordAttempt
@@ -86,7 +86,7 @@ const Login = ({ navigation }) => {
         return;
       }
       const { data: user } = await axios.post(
-        'http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/auth/register',
+        'http://localhost:3000/api/auth/register',
         {
           username,
           password: passwordAttempt

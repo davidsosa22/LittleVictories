@@ -13,7 +13,7 @@ const Friends = (): ReactElement => {
   const getAllUsers = () => {
     axios
       .get(
-        'http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/auth/users'
+        'http://localhost:3000/api/auth/users'
       )
       .then(({ data }) => {
         setUsers(
@@ -31,15 +31,6 @@ const Friends = (): ReactElement => {
     }
   }, [user]);
 
-  // const handleSearch = (text) => {
-  //   const filteredData = filter(fullData, (user) => {
-  //     const itemData = user.username.toUpperCase();
-  //     const textData = text.toUpperCase();
-  //     return itemData.indexOf(textData) > -1;
-  //   });
-  //   setUsers(filteredData);
-  //   setQuery(text);
-  // };
 
   return (
     <View style={styles.main}>

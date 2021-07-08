@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { View, StyleSheet, Text } from 'react-native';
 import { useUserContext } from '../../Contexts/userContext';
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { CheckBox } from 'react-native-elements';
 import { format } from 'date-fns';
 
-const SingleHabit = ({ item }) => {
+const SingleHabit = ({ item }) : ReactElement => {
   const { user, setUser } = useUserContext();
   const [finished, setFinished] = useState(item.is_complete);
   const [removed, setRemoved] = useState(false);
@@ -15,7 +15,7 @@ const SingleHabit = ({ item }) => {
       const {
         data: { points, level }
       } = await axios.patch(
-        `http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/habits/${item.id}/complete`
+        `http://localhost:3000/api/habits/${item.id}/complete`
       );
       const mappedHabits = user.habits.map((habit) => {
         if (habit.id === item.id) {
@@ -34,7 +34,7 @@ const SingleHabit = ({ item }) => {
       const {
         data: { points, level }
       } = await axios.patch(
-        `http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/habits/${item.id}/incomplete`
+        `http://localhost:3000/api/habits/${item.id}/incomplete`
       );
       const mappedHabits = user.habits.map((habit) => {
         if (habit.id === item.id) {
@@ -51,7 +51,7 @@ const SingleHabit = ({ item }) => {
   const removeHabit = async () => {
     try {
       await axios.delete(
-        `http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/habits/${item.id}`
+        `http://localhost:3000/api/habits/${item.id}`
       );
       const filteredHabits = user.habits.filter((habit) => {
         return habit.id !== item.id;

@@ -1,13 +1,13 @@
 import ProgressBar from '../Root/ProgressBar';
 import CurrentJournal from './CurrentJournal';
 import PastJournals from './PastJournals';
-import React, { useState } from 'react';
+import React, { ReactElement, ReactEventHandler, useState } from 'react';
 import { ImageBackground, SafeAreaView, StyleSheet, View } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
 import { useUserContext } from '../../Contexts/userContext';
 import { containerStyles } from '../../Stylesheets/Stylesheet';
 
-const Journals = () => {
+const Journals = () : ReactElement => {
   const bgImage = require('../../../assets/images/blue-gradient.png');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const buttons = ['Current', 'Previous'];

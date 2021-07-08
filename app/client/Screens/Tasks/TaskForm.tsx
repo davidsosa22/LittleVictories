@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import {
   View,
   TextInput,
@@ -14,7 +14,7 @@ import Slider from '@react-native-community/slider';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { isBefore } from 'date-fns';
 import Tasks from './Tasks';
-const TaskForm = () => {
+const TaskForm = () : ReactElement => {
   const [showForm, setShowForm] = useState(false);
   const [description, setDescription] = useState('');
   const [timeToComplete, setTimeToComplete] = useState(0);
@@ -36,7 +36,7 @@ const TaskForm = () => {
       alert('this date is in the past, please select a future date.');
     } else {
       const { data: task } = await axios.post(
-        'http://ec2-13-59-184-112.us-east-2.compute.amazonaws.com/api/tasks/',
+        'http://localhost:3000/api/tasks/',
         {
           user_id: user.id,
           description,

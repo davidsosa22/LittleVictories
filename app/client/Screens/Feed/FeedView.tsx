@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { FlatList, View, Text, StyleSheet } from 'react-native';
 import { v4 as getKey } from 'uuid';
 import { useFeedContext } from '../../Contexts/feedContext';
 import FeedItem from './FeedItem';
 
-const FeedView = () => {
+const FeedView = () : ReactElement => {
   const { feed } = useFeedContext();
   return (
     <View
